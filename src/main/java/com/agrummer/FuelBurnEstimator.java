@@ -1,17 +1,21 @@
 package com.agrummer;
 
+import com.agrummer.entity.Airport;
 import com.agrummer.exception.AirportTooFarFromHomeException;
 import com.agrummer.exception.InsufficientSeatingCapacityException;
 import com.agrummer.exception.InvalidAirportCodeException;
 import com.agrummer.service.AirportService;
+import com.agrummer.util.DistanceUtil;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Fuel Burn Estimator Coding Exercise
  * Written by Alex Grummer on March 31st, 2020
  *
  * Complete the three public methods below to get all the unit tests passing.
+ * Feel free to add whatever you need to write high quality, maintainable code!
  */
 public class FuelBurnEstimator {
 
@@ -36,12 +40,12 @@ public class FuelBurnEstimator {
     /**
      * 2. Add passengers to the trip
      *
-     * @param destinationAirportCode                    airport code of the passenger's destination airport
-     * @throws InsufficientSeatingCapacityException     if the aircraft is already at full passenger seating capacity
-     * @throws InvalidAirportCodeException              if the airport code provided does not resolve to a valid airport
-     * @throws AirportTooFarFromHomeException           if the aircraft does not have sufficient fuel capacity to fly home from the destination airport
+     * @param   destinationAirportCode                   airport code of the passenger's destination airport
+     * @throws  InsufficientSeatingCapacityException     if the aircraft is already at full passenger seating capacity
+     * @throws  InvalidAirportCodeException              if the airport code provided does not resolve to a valid airport
+     * @throws  AirportTooFarFromHomeException           if the aircraft does not have sufficient fuel capacity to fly home from the destination airport
      */
-    void addPassenger(String destinationAirportCode) throws InsufficientSeatingCapacityException, InvalidAirportCodeException, AirportTooFarFromHomeException {
+    public void addPassenger(String destinationAirportCode) throws InsufficientSeatingCapacityException, InvalidAirportCodeException, AirportTooFarFromHomeException {
         // TODO
     }
 
@@ -50,7 +54,7 @@ public class FuelBurnEstimator {
      *
      * @return kilograms of fuel required
      */
-    double calcFuelRequired() {
+    public double calcFuelRequired() {
         // TODO
         return 0.0;
     }

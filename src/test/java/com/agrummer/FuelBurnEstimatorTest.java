@@ -46,10 +46,10 @@ public class FuelBurnEstimatorTest {
         estimator.addPassenger("KLAX");
         estimator.addPassenger("KPDX");
         estimator.addPassenger("KPDX");
-        estimator.addPassenger("KBIL");
+        estimator.addPassenger("KSFO");
         estimator.addPassenger("KSLC");
         estimator.addPassenger("KSLC");
-        estimator.addPassenger("KDEN");
+        estimator.addPassenger("KLAX");
         estimator.addPassenger("KSFO");
         estimator.addPassenger("KSFO");
         estimator.addPassenger("CYVR");
@@ -58,7 +58,7 @@ public class FuelBurnEstimatorTest {
         estimator.addPassenger("KOAK");
         estimator.addPassenger("KLAX");
 
-        double expected = 4169.17;
+        double expected = 2819.38;
         double actual = estimator.calcFuelRequired();
         Assert.assertEquals("", expected, actual, DELTA_TOLERANCE);
     }
@@ -69,10 +69,10 @@ public class FuelBurnEstimatorTest {
         FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 1900, aircraftSeatingCapacity);
 
         for (int i = 0; i < aircraftSeatingCapacity; i++) {
-            estimator.addPassenger("KDFW");
+            estimator.addPassenger("KPDX");
         }
 
-        double expected = 7955.36;
+        double expected = 323.556;
         double actual = estimator.calcFuelRequired();
         Assert.assertEquals("", expected, actual, DELTA_TOLERANCE);
     }

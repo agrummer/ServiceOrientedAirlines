@@ -1,5 +1,6 @@
 package com.agrummer;
 
+import com.agrummer.exception.AirportTooFarFromHomeException;
 import com.agrummer.exception.InsufficientSeatingCapacityException;
 import com.agrummer.exception.InvalidAirportCodeException;
 import org.junit.Assert;
@@ -15,7 +16,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testSinglePassengerToSingleDestination() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.5, 6);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.5, 400,6);
 
         estimator.addPassenger("KPDX");
 
@@ -26,7 +27,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testMultiplePassengersToSingleDestination() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.5, 6);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.5, 400, 6);
 
         for (int i = 0; i < 3; i++) {
             estimator.addPassenger("KPDX");
@@ -39,7 +40,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testMultiplePassengersToMultipleDestinations() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.8, 18);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.8, 1000,18);
 
         estimator.addPassenger("KLAX");
         estimator.addPassenger("KLAX");
@@ -65,7 +66,7 @@ public class FuelBurnEstimatorTest {
     @Test
     public void testSeatsAtFullCapacity() throws Exception {
         final int aircraftSeatingCapacity = 18;
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, aircraftSeatingCapacity);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 1900, aircraftSeatingCapacity);
 
         for (int i = 0; i < aircraftSeatingCapacity; i++) {
             estimator.addPassenger("KDFW");
@@ -79,7 +80,7 @@ public class FuelBurnEstimatorTest {
     @Test
     public void testOverSeatingCapacityThrowsException() throws Exception {
         final int aircraftSeatingCapacity = 18;
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, aircraftSeatingCapacity);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 1900, aircraftSeatingCapacity);
 
         for (int i = 0; i < aircraftSeatingCapacity; i++) {
             try {
@@ -99,7 +100,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testInvalidAirportCodeThrowsException() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,2.0, 36);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,2.0, 2200, 36);
 
         try {
             estimator.addPassenger("ABC123");
@@ -110,9 +111,29 @@ public class FuelBurnEstimatorTest {
     }
 
     @Test
-    public void testEstimateStillAccurateAfterHandlingExceptions() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 14);
+    public void testAirportTooFarFromHomeThrowsException() throws Exception {
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 1200, 14);
 
+        try {
+            // Destination: Moscow, Russia
+            estimator.addPassenger("UUDD");
+            Assert.fail("Should have thrown AirportTooFarFromHomeException");
+        } catch (AirportTooFarFromHomeException e) {
+            // Success
+        }
+    }
+
+    @Test
+    public void testEstimateStillAccurateAfterHandlingExceptions() throws Exception {
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 1200,14);
+
+        try {
+            // Destination: Moscow, Russia
+            estimator.addPassenger("UUDD");
+            Assert.fail("Should have thrown AirportOutOfRangeException");
+        } catch (AirportTooFarFromHomeException e) {
+            // Do nothing
+        }
         for (int i = 0; i < 10; i++) {
             estimator.addPassenger("KSLC");
         }

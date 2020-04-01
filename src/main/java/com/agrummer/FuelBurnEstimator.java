@@ -1,5 +1,6 @@
 package com.agrummer;
 
+import com.agrummer.exception.AirportTooFarFromHomeException;
 import com.agrummer.exception.InsufficientSeatingCapacityException;
 import com.agrummer.exception.InvalidAirportCodeException;
 import com.agrummer.service.AirportService;
@@ -25,9 +26,10 @@ public class FuelBurnEstimator {
      *
      * @param homeAirportCode           airport code of home base airport where trips will originate and terminate
      * @param aircraftFuelBurnRateKgKm  rate the aircraft burns fuel, in kilograms per kilometer
+     * @param aircraftFuelCapacityKg    the aircraft's maximum fuel capacity in kg
      * @param aircraftSeatingCapacity   maximum passenger seating capacity of the aircraft
      */
-    public FuelBurnEstimator(String homeAirportCode, double aircraftFuelBurnRateKgKm, int aircraftSeatingCapacity) throws Exception {
+    public FuelBurnEstimator(String homeAirportCode, double aircraftFuelBurnRateKgKm, double aircraftFuelCapacityKg, int aircraftSeatingCapacity) throws Exception {
         // TODO
     }
 
@@ -37,8 +39,9 @@ public class FuelBurnEstimator {
      * @param destinationAirportCode                    airport code of the passenger's destination airport
      * @throws InsufficientSeatingCapacityException     if the aircraft is already at full passenger seating capacity
      * @throws InvalidAirportCodeException              if the airport code provided does not resolve to a valid airport
+     * @throws AirportTooFarFromHomeException           if the aircraft does not have sufficient fuel capacity to fly home from the destination airport
      */
-    void addPassenger(String destinationAirportCode) throws InsufficientSeatingCapacityException, InvalidAirportCodeException {
+    void addPassenger(String destinationAirportCode) throws InsufficientSeatingCapacityException, InvalidAirportCodeException, AirportTooFarFromHomeException {
         // TODO
     }
 

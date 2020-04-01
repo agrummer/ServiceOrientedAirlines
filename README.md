@@ -17,12 +17,17 @@ flight plan and flies to the next closest destination in the flight plan.
 4. The aircraft continues this pattern until it has visited all of the remaining destinations in the flight plan.
 5. Once all destinations in the flight plan have been reached, the aircraft flies back to its original home airport.
 
+Note: The aircraft can be refueled at each airport on the flight plan, but it will need to fly home from the last 
+airport on the flight plan without stopping.
+
 ### Program Specification
 * When a plane is ready for boarding, the gate agent will input the following information:
-    * Home airport code
-    * Aircraft fuel burn rate in kg/km
+    * Home airport code (where the flight plan will start and end)
+    * Aircraft's fuel burn rate in kg/km
+    * Aircraft's maximum fuel capacity in kg
     * Aircraft seating capacity
 * Passengers and their destinations will be added to the system as they show up to board the plane.
     * If there are not enough available seats remaining on the aircraft, the program should alert the gate agent.
-    * If the passenger's destination airport is not within the airline's service network, alert the gate agent. 
+    * If the passenger's destination airport is not within the airline's service network, do not allow the passenger to board.
+    * If the passenger's destination airport is too far away for the aircraft to fly home, do not allow the passenger to board. 
 *  When boarding is complete, calculate the amount of fuel required (in kg) for the full flight plan.

@@ -40,7 +40,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testMultiplePassengersToMultipleDestinations() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.8, 1000,18);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.8, 2000,18);
 
         estimator.addPassenger("KLAX");
         estimator.addPassenger("KLAX");
@@ -66,7 +66,7 @@ public class FuelBurnEstimatorTest {
     @Test
     public void testSeatsAtFullCapacity() throws Exception {
         final int aircraftSeatingCapacity = 18;
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 1900, aircraftSeatingCapacity);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 3800, aircraftSeatingCapacity);
 
         for (int i = 0; i < aircraftSeatingCapacity; i++) {
             estimator.addPassenger("KPDX");
@@ -80,7 +80,7 @@ public class FuelBurnEstimatorTest {
     @Test
     public void testOverSeatingCapacityThrowsException() throws Exception {
         final int aircraftSeatingCapacity = 18;
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 1900, aircraftSeatingCapacity);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 3800, aircraftSeatingCapacity);
 
         for (int i = 0; i < aircraftSeatingCapacity; i++) {
             try {
@@ -100,7 +100,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testInvalidAirportCodeThrowsException() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,2.0, 2200, 36);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,2.0, 4400, 36);
 
         try {
             estimator.addPassenger("ABC123");
@@ -112,7 +112,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testAirportTooFarFromHomeThrowsException() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 1200, 14);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 2400, 14);
 
         try {
             // Destination: Moscow, Russia
@@ -125,7 +125,7 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testEstimateStillAccurateAfterHandlingExceptions() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 1200,14);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 2400,14);
 
         try {
             // Destination: Moscow, Russia

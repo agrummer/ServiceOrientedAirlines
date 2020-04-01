@@ -43,7 +43,8 @@ public class FuelBurnEstimator {
      * @param   destinationAirportCode                   airport code of the passenger's destination airport
      * @throws  InsufficientSeatingCapacityException     if the aircraft is already at full passenger seating capacity
      * @throws  InvalidAirportCodeException              if the airport code provided does not resolve to a valid airport
-     * @throws  AirportTooFarFromHomeException           if the aircraft does not have sufficient fuel capacity to fly home from the destination airport
+     * @throws  AirportTooFarFromHomeException           if the distance between the destination airport and the home
+     *                                                   airport is more than half the maximum range of the aircraft
      */
     public void addPassenger(String destinationAirportCode) throws InsufficientSeatingCapacityException, InvalidAirportCodeException, AirportTooFarFromHomeException {
         // TODO

@@ -9,6 +9,7 @@ Ticket pricing varies based on the number of passengers, destinations, and fuel 
 component that estimates the fuel required for a aircraft's full round-trip flight plan.
 
 ### The Flight Plan
+
 1. Starting at an aircraft's home city, a flight plan is determined by the unique list of destinations for all the 
 passengers on board.
 2. The aircraft flies to the closest destination in the flight plan first.
@@ -21,6 +22,7 @@ Note: The aircraft can be refueled at each airport on the flight plan, but it wi
 airport on the flight plan without stopping.
 
 ### Program Specification
+
 * When a plane is ready for boarding, the gate agent will input the following information:
     * Home airport code (where the flight plan will start and end)
     * Aircraft's fuel burn rate in kg/km
@@ -31,3 +33,17 @@ airport on the flight plan without stopping.
     * If the passenger's destination airport is not within the airline's service network, do not allow the passenger to board.
     * If the passenger's destination airport is too far away for the aircraft to fly home, do not allow the passenger to board. 
 *  When boarding is complete, calculate the amount of fuel required (in kg) for the full flight plan.
+
+Note: The impact of passenger weight on the fuel burn rate is negligible, so don't worry about it for this exercise 
+(and don't worry about head or tail winds, time spent taxiing, or any other complexities outside the scope of these 
+instructions).
+
+### Getting Started
+
+1. Install [Maven](http://maven.apache.org/install.html "Install Maven") if you don't already have it
+2. From the root directory of this project (same directory as this README.md file), compile the code and run the 
+test suite:
+```shell script
+$ mvn test
+```
+Open `src/main/java/com/agrummer/FuelBurnEstimator.java` and start writing code to get the tests passing!

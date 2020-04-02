@@ -2,11 +2,12 @@
 
 You're working for a hip new airline start-up that's rethinking the way we travel. Instead of big crowded planes and 
 rigid schedules, Service Oriented Airlines has a fleet of small planes, with a plane taking off every 30 minutes.
-Passengers board planes based on when they show up at the airport, so a plane's flight plan is determined just before 
-departure, and can include multiple destinations based on the passengers on board.
+Passengers are added to a queue upon arrival, and an aircraft is selected based on the capacity required to transport
+the queued passengers and their luggage. The aircraft's flight plan is determined just before departure, and can 
+include multiple destinations based on the passengers on board.
 
 Ticket pricing varies based on the number of passengers, destinations, and fuel costs. You've been asked to build a
-component that estimates the fuel required for a aircraft's full round-trip flight plan.
+program that can estimate the fuel required for a aircraft's full round-trip flight plan.
 
 ## The Flight Plan
 
@@ -17,7 +18,7 @@ passengers on board.
 4. The aircraft continues this pattern until it has visited all of the remaining destinations in the flight plan.
 5. Once all destinations in the flight plan have been reached, the aircraft flies back to its original home airport.
 
-#### Example
+#### Example Flight Plan
 
 If the home airport is in **Seattle** and the passengers are going to **San Francisco**, **Portland** 
 and **Los Angeles**, the flight plan would be:
@@ -30,19 +31,15 @@ airport on the flight plan without stopping.
 
 ## Program Specification
 
-* When a plane is ready for boarding, the gate agent will input the following information:
-    * Home airport code (where the flight plan will start and end)
-    * Aircraft's fuel burn rate in kg/km
-    * Aircraft's maximum fuel capacity in kg
-    * Aircraft seating capacity
-* Passengers and their destinations will be added to the system as they show up to board the plane.
-    * If there are not enough available seats remaining on the aircraft, the program should alert the gate agent.
-    * If the passenger's destination airport is not within the airline's service network, do not allow the passenger 
-    to board.
-    * If the distance between the home airport and the passenger's destination airport is more than half the max range 
-    of the aircraft, do not allow the passenger to board (this ensures no two destinations will be farther apart than 
-    the plane can fly). 
-*  When boarding is complete, calculate the amount of fuel required (in kg) for the full flight plan.
+* Upon initialization, the gate agent will enter the home airport code (where the flight plan will start and end).
+* Passengers, checked bags, and destinations will be added to the system as passengers show up at the gate.
+    * Throw an exception if the passenger's destination airport is not within the airline's service network.
+    * Throw an exception if the number of passengers in the system has already reached the maximum seating capacity 
+    of the largest available aircraft.
+* When it's time to board, the program should select an appropriate aircraft from the fleet, with the capacity to
+seat all the passengers, stow all their checked bags, and reach all their destinations. 
+* Based on the aircraft selected, calculate the amount of fuel required (in kg) for the full flight plan.
+    * Throw an exception if there are no available aircraft with enough range to make the trip.
 
 Note: The impact of passenger weight on the fuel burn rate is negligible, so don't worry about it for this exercise 
 (and don't worry about head or tail winds, time spent taxiing, or any other complexities outside the scope of these 

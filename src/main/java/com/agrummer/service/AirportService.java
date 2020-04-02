@@ -76,9 +76,9 @@ public class AirportService {
      * Optionally returns an instance of Airport if the airport code argument provided maps to
      * an airport that this service knows about
      *
-     * @param   code    airport code
-     * @return          instance of Optional, with or without an instance of Airport
-     * @see             Airport
+     * @param code airport code
+     * @return instance of Optional, with or without an instance of Airport
+     * @see Airport
      */
     public Optional<Airport> getAirport(String code) {
         if (airportsByCode.containsKey(code)) {

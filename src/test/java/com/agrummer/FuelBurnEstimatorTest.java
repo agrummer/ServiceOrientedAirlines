@@ -1,8 +1,7 @@
 package com.agrummer;
 
-import com.agrummer.exception.AirportTooFarFromHomeException;
-import com.agrummer.exception.InsufficientSeatingCapacityException;
 import com.agrummer.exception.InvalidAirportCodeException;
+import com.agrummer.exception.NoAircraftForFlightLoadException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,9 +15,9 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testSinglePassengerToSingleDestination() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.5, 400,6);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
-        estimator.addPassenger("KPDX");
+        estimator.addPassenger("KPDX", 1);
 
         double expected = 115.55;
         double actual = estimator.calcFuelRequired();
@@ -27,10 +26,10 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testMultiplePassengersToSingleDestination() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.5, 400, 6);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
         for (int i = 0; i < 3; i++) {
-            estimator.addPassenger("KPDX");
+            estimator.addPassenger("KPDX", 1);
         }
 
         double expected = 115.55;
@@ -40,23 +39,23 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testMultiplePassengersToMultipleDestinations() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.8, 2000,18);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
-        estimator.addPassenger("KLAX");
-        estimator.addPassenger("KLAX");
-        estimator.addPassenger("KPDX");
-        estimator.addPassenger("KPDX");
-        estimator.addPassenger("KSFO");
-        estimator.addPassenger("KSLC");
-        estimator.addPassenger("KSLC");
-        estimator.addPassenger("KLAX");
-        estimator.addPassenger("KSFO");
-        estimator.addPassenger("KSFO");
-        estimator.addPassenger("CYVR");
-        estimator.addPassenger("KOAK");
-        estimator.addPassenger("KSLC");
-        estimator.addPassenger("KOAK");
-        estimator.addPassenger("KLAX");
+        estimator.addPassenger("KLAX", 1);
+        estimator.addPassenger("KLAX", 0);
+        estimator.addPassenger("KPDX", 2);
+        estimator.addPassenger("KPDX", 1);
+        estimator.addPassenger("KSFO", 3);
+        estimator.addPassenger("KSLC", 1);
+        estimator.addPassenger("KSLC", 0);
+        estimator.addPassenger("KLAX", 2);
+        estimator.addPassenger("KSFO", 3);
+        estimator.addPassenger("KSFO", 1);
+        estimator.addPassenger("CYVR", 0);
+        estimator.addPassenger("KOAK", 0);
+        estimator.addPassenger("KSLC", 0);
+        estimator.addPassenger("KOAK", 1);
+        estimator.addPassenger("KLAX", 0);
 
         double expected = 2819.38;
         double actual = estimator.calcFuelRequired();
@@ -65,11 +64,10 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testSeatsAtFullCapacity() throws Exception {
-        final int aircraftSeatingCapacity = 18;
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 3800, aircraftSeatingCapacity);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
-        for (int i = 0; i < aircraftSeatingCapacity; i++) {
-            estimator.addPassenger("KPDX");
+        for (int i = 0; i < 36; i++) {
+            estimator.addPassenger("KPDX", 2);
         }
 
         double expected = 323.556;
@@ -79,31 +77,65 @@ public class FuelBurnEstimatorTest {
 
     @Test
     public void testOverSeatingCapacityThrowsException() throws Exception {
-        final int aircraftSeatingCapacity = 18;
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,1.4, 3800, aircraftSeatingCapacity);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
-        for (int i = 0; i < aircraftSeatingCapacity; i++) {
+        for (int i = 0; i < 36; i++) {
             try {
-                estimator.addPassenger("CYVR");
-            } catch (InsufficientSeatingCapacityException e) {
-                Assert.fail("InsufficientSeatingCapacityException was thrown before seating capacity was exceeded");
+                estimator.addPassenger("CYVR", 0);
+            } catch (NoAircraftForFlightLoadException e) {
+                Assert.fail("NoAircraftForFlightLoadException was thrown before seating capacity was exceeded");
             }
         }
 
         try {
-            estimator.addPassenger("CYVR");
-            Assert.fail("Should have thrown InsufficientSeatingCapacityException");
-        } catch (InsufficientSeatingCapacityException e) {
+            estimator.addPassenger("CYVR", 0);
+            Assert.fail("Should have thrown NoAircraftForFlightLoadException because no available airplane has enough " +
+                    "seats for the additional passenger");
+        } catch (NoAircraftForFlightLoadException e) {
+            // Success
+        }
+    }
+
+    @Test
+    public void testCheckedBagsAtFullCapacity() throws Exception {
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
+
+        for (int i = 0; i < 24; i++) {
+            estimator.addPassenger("KPDX", 3);
+        }
+
+        double expected = 323.556;
+        double actual = estimator.calcFuelRequired();
+        Assert.assertEquals("", expected, actual, DELTA_TOLERANCE);
+    }
+
+    @Test
+    public void testOverCheckedBagCapacityThrowsException() throws Exception {
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
+
+        for (int i = 0; i < 24; i++) {
+            try {
+                estimator.addPassenger("KPDX", 3);
+            } catch (NoAircraftForFlightLoadException e) {
+                Assert.fail("NoAircraftForFlightLoadException was thrown before checked bag capacity was exceeded");
+            }
+        }
+
+        try {
+            estimator.addPassenger("KPDX", 1);
+            Assert.fail("Should have thrown NoAircraftForFlightLoadException because no available airplane has enough " +
+                    "checked baggage capacity for the additional bag");
+        } catch (NoAircraftForFlightLoadException e) {
             // Success
         }
     }
 
     @Test
     public void testInvalidAirportCodeThrowsException() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,2.0, 4400, 36);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
         try {
-            estimator.addPassenger("ABC123");
+            estimator.addPassenger("ABC123", 0);
             Assert.fail("Should have thrown InvalidAirportCodeException");
         } catch (InvalidAirportCodeException e) {
             // Success
@@ -111,45 +143,40 @@ public class FuelBurnEstimatorTest {
     }
 
     @Test
-    public void testAirportTooFarFromHomeThrowsException() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 2400, 14);
+    public void testNoAircraftCanReachDestinationThrowsException() throws Exception {
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
+
+        // Destination: Moscow, Russia
+        estimator.addPassenger("UUDD", 0);
 
         try {
-            // Destination: Moscow, Russia
-            estimator.addPassenger("UUDD");
-            Assert.fail("Should have thrown AirportTooFarFromHomeException");
-        } catch (AirportTooFarFromHomeException e) {
+            estimator.calcFuelRequired();
+            Assert.fail("Should have thrown NoAircraftForFlightLoadException");
+        } catch (NoAircraftForFlightLoadException e) {
             // Success
         }
     }
 
     @Test
     public void testEstimateStillAccurateAfterHandlingExceptions() throws Exception {
-        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE,0.65, 2400,14);
+        FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
-        try {
-            // Destination: Moscow, Russia
-            estimator.addPassenger("UUDD");
-            Assert.fail("Should have thrown AirportOutOfRangeException");
-        } catch (AirportTooFarFromHomeException e) {
-            // Do nothing
-        }
         for (int i = 0; i < 10; i++) {
-            estimator.addPassenger("KSLC");
+            estimator.addPassenger("KSLC", 2);
         }
         try {
-            estimator.addPassenger("ABC123");
+            estimator.addPassenger("ABC123", 1);
             Assert.fail("Should have thrown InvalidAirportCodeException");
         } catch (InvalidAirportCodeException e) {
             // Do nothing
         }
-        for (int i = 0; i < 4; i++) {
-            estimator.addPassenger("KBIL");
+        for (int i = 0; i < 26; i++) {
+            estimator.addPassenger("KBIL", 2);
         }
         try {
-            estimator.addPassenger("KPDX");
-            Assert.fail("Should have thrown InsufficientSeatingCapacityException");
-        } catch (InsufficientSeatingCapacityException e) {
+            estimator.addPassenger("KPDX", 1);
+            Assert.fail("Should have thrown NoAircraftForFlightLoadException");
+        } catch (NoAircraftForFlightLoadException e) {
             // Do nothing
         }
 

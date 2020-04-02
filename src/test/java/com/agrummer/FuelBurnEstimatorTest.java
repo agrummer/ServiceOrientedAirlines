@@ -57,7 +57,7 @@ public class FuelBurnEstimatorTest {
         estimator.addPassenger("KOAK", 1);
         estimator.addPassenger("KLAX", 0);
 
-        double expected = 2819.38;
+        double expected = 3524.22;
         double actual = estimator.calcFuelRequired();
         Assert.assertEquals("", expected, actual, DELTA_TOLERANCE);
     }
@@ -70,7 +70,7 @@ public class FuelBurnEstimatorTest {
             estimator.addPassenger("KPDX", 2);
         }
 
-        double expected = 323.556;
+        double expected = 801.96;
         double actual = estimator.calcFuelRequired();
         Assert.assertEquals("", expected, actual, DELTA_TOLERANCE);
     }
@@ -104,7 +104,7 @@ public class FuelBurnEstimatorTest {
             estimator.addPassenger("KPDX", 3);
         }
 
-        double expected = 323.556;
+        double expected = 801.96;
         double actual = estimator.calcFuelRequired();
         Assert.assertEquals("", expected, actual, DELTA_TOLERANCE);
     }
@@ -162,7 +162,7 @@ public class FuelBurnEstimatorTest {
         FuelBurnEstimator estimator = new FuelBurnEstimator(HOME_AIRPORT_CODE);
 
         for (int i = 0; i < 10; i++) {
-            estimator.addPassenger("KSLC", 2);
+            estimator.addPassenger("KPDX", 2);
         }
         try {
             estimator.addPassenger("ABC123", 1);
@@ -171,7 +171,7 @@ public class FuelBurnEstimatorTest {
             // Do nothing
         }
         for (int i = 0; i < 26; i++) {
-            estimator.addPassenger("KBIL", 2);
+            estimator.addPassenger("KPDX", 2);
         }
         try {
             estimator.addPassenger("KPDX", 1);
@@ -180,7 +180,7 @@ public class FuelBurnEstimatorTest {
             // Do nothing
         }
 
-        double expected = 2051.45;
+        double expected = 801.96;
         double actual = estimator.calcFuelRequired();
         Assert.assertEquals("", expected, actual, DELTA_TOLERANCE);
     }

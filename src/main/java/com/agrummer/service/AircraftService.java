@@ -27,8 +27,8 @@ public class AircraftService {
                 new Aircraft("Cessna Citation M2", 6, 12, 400, 0.5),
                 new Aircraft("Gulfstream G200", 18, 36, 2000, 0.8),
                 new Aircraft("Embraer Brasilia", 14, 28, 2400, 0.65),
-                new Aircraft("Beechcraft 1900D", 18, 36, 3800, 1.4),
-                new Aircraft("Bombardier CRJ900", 36, 72, 4400, 2.0)
+                new Aircraft("Beechcraft 1900D", 18, 36, 3800, 1.0),
+                new Aircraft("Bombardier CRJ900", 36, 72, 8800, 3.47)
         ));
     }
 
@@ -62,6 +62,16 @@ public class AircraftService {
     public int getMaximumSeatingCapacity() {
        Optional<Aircraft> aircraft = availableAircraft.stream().max(Comparator.comparingInt(Aircraft::getSeatingCapacity));
         return aircraft.map(Aircraft::getSeatingCapacity).orElse(0);
+    }
+
+    /**
+     * Returns the greatest checked bag capacity of all currently available aircraft
+     *
+     * @return number of checked bags
+     */
+    public int getMaximumCheckedBagCapacity() {
+        Optional<Aircraft> aircraft = availableAircraft.stream().max(Comparator.comparingInt(Aircraft::getCheckedBagCapacity));
+        return aircraft.map(Aircraft::getCheckedBagCapacity).orElse(0);
     }
 
     private static double getMaxRange(Aircraft aircraft) {

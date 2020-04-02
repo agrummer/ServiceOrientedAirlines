@@ -1,11 +1,15 @@
 package com.agrummer;
 
+import com.agrummer.entity.Aircraft;
+import com.agrummer.entity.Airport;
 import com.agrummer.exception.InvalidAirportCodeException;
 import com.agrummer.exception.NoAircraftForFlightLoadException;
 import com.agrummer.service.AircraftService;
 import com.agrummer.service.AirportService;
+import com.agrummer.util.DistanceUtil;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Fuel Burn Estimator Coding Exercise

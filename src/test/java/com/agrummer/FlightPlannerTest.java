@@ -73,15 +73,15 @@ public class FlightPlannerTest {
         FlightPlan flightPlan = planner.buildFlightPlan();
         List<String> expectedAirportCodes = Arrays.asList(
                 HOME_AIRPORT_CODE,
-                "CYVR",
                 "KPDX",
+                "CYVR",
                 "KOAK",
                 "KSFO",
-                "KSLC",
                 "KLAX",
+                "KSLC",
                 HOME_AIRPORT_CODE);
         Assert.assertEquals(AIRPORTS_MSG, expectedAirportCodes, flightPlan.getAirportCodes());
-        Assert.assertEquals(PASSENGERS_MSG, 14, flightPlan.getPassengers());
+        Assert.assertEquals(PASSENGERS_MSG, 15, flightPlan.getPassengers());
         Assert.assertEquals(CHECKED_BAGS_MSG, 15, flightPlan.getCheckedBags());
     }
 

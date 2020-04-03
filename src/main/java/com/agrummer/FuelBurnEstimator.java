@@ -9,7 +9,9 @@ import com.agrummer.service.AirportService;
 import com.agrummer.util.DistanceUtil;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Fuel Burn Estimator Coding Exercise
@@ -22,6 +24,7 @@ public class FuelBurnEstimator {
 
     private AircraftService aircraftService;
     private AirportService airportService;
+    private FlightPlan flightPlan;
 
     private void initServices() throws IOException {
         this.aircraftService = AircraftService.init();
@@ -33,7 +36,7 @@ public class FuelBurnEstimator {
      *
      */
     public FuelBurnEstimator() throws Exception {
-        // TODO
+        initServices();
     }
 
     /**
@@ -42,7 +45,7 @@ public class FuelBurnEstimator {
      * @param flightPlan information about the flight (destinations, passengers, checked bags)
      */
     public void setFlightPlan(FlightPlan flightPlan) {
-        // TODO
+        this.flightPlan = flightPlan;
     }
 
     /**
@@ -52,8 +55,24 @@ public class FuelBurnEstimator {
      * @return kilograms of fuel required
      */
     public double calcFuelRequired() throws NoAircraftForFlightLoadException {
-        // TODO
-        return 0.0;
+        
+        List<String> airportCodes = flightPlan.getAirportCodes();
+        List<Airport> airports = airportCodes.stream().map((airportCode) -> airportService.getAirport(airportCode).get()).collect(
+            Collectors.toList());
+        
+        double distance = 0.0d;
+        
+        for(int i = 0; i < airports.size() - 1; i++){
+            Airport startAirport = airports.get(i);
+            Airport endAirport = airports.get(i + 1);
+            
+            distance += DistanceUtil.calcKilometersBetween(startAirport.getCoordinates(), endAirport.getCoordinates());
+        }
+        Aircraft aircraft = aircraftService.getAircraftForLoad(flightPlan.getPassengers(), flightPlan.getCheckedBags(), distance).orElseThrow(
+            NoAircraftForFlightLoadException::new);
+        
+        return aircraft.getFuelBurnRateKgKm() * distance;
     }
+    
 
 }

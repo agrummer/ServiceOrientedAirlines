@@ -2,7 +2,7 @@ package com.agrummer;
 
 import com.agrummer.entity.Aircraft;
 import com.agrummer.entity.Airport;
-import com.agrummer.exception.InvalidAirportCodeException;
+import com.agrummer.entity.FlightPlan;
 import com.agrummer.exception.NoAircraftForFlightLoadException;
 import com.agrummer.service.AircraftService;
 import com.agrummer.service.AirportService;
@@ -31,20 +31,17 @@ public class FuelBurnEstimator {
     /**
      * 1. Constructor - Initialize this class
      *
-     * @param homeAirportCode airport code of home base airport where trips will originate and terminate
      */
-    public FuelBurnEstimator(String homeAirportCode) throws Exception {
+    public FuelBurnEstimator() throws Exception {
         // TODO
     }
 
     /**
-     * 2. Add passengers to the trip
+     * 2. Set flight plan
      *
-     * @param destinationAirportCode                airport code of the passenger's destination airport
-     * @throws InvalidAirportCodeException          if the airport code provided does not resolve to a valid airport
-     * @throws NoAircraftForFlightLoadException     if there are no available aircraft with enough seating capacity to add the passenger
+     * @param flightPlan information about the flight (destinations, passengers, checked bags)
      */
-    public void addPassenger(String destinationAirportCode, int checkedBags) throws InvalidAirportCodeException, NoAircraftForFlightLoadException {
+    public void setFlightPlan(FlightPlan flightPlan) {
         // TODO
     }
 

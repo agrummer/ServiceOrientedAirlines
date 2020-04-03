@@ -1,5 +1,8 @@
 package com.agrummer.entity;
 
+/**
+ * There is no need to modify this class for the purpose of the coding exercise!
+ */
 public class Aircraft {
 
     private String name;

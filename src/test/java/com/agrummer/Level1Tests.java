@@ -15,7 +15,7 @@ import java.util.List;
  *
  * There is no need to modify this class for the purpose of the coding exercise!
  */
-public class FlightPlannerTest {
+public class Level1Tests {
 
     private static final String HOME_AIRPORT_CODE = "KSEA";
     private static final String AIRPORTS_MSG = "List of airports is incorrect";

@@ -5,9 +5,7 @@ import com.agrummer.entity.Aircraft;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Simple service to provide information about aircraft operated by Service Oriented Airlines.
@@ -33,25 +31,13 @@ public class AircraftService {
     }
 
     /**
-     * Optionally returns the smallest available aircraft that meets all of the minimum requirements provided (if one exists)
+     * Returns all currently available aircraft from the fleet or empty list if none available
      *
-     * @param minSeatingCapacity    minimum number of seats for passengers
-     * @param minCheckedBagCapacity minimum capacity for checked bags
-     * @param minRangeKm            minimum range in kilometers
-     * @return optional of Aircraft
+     * @return Collection of Aircraft
      * @see Aircraft
      */
-    public Optional<Aircraft> getAircraftForLoad(int minSeatingCapacity, int minCheckedBagCapacity, double minRangeKm) {
-        List<Aircraft> meetsRequirements = availableAircraft.stream().filter(aircraft -> {
-            return aircraft.getSeatingCapacity() >= minSeatingCapacity
-                    && aircraft.getCheckedBagCapacity() >= minCheckedBagCapacity
-                    && getMaxRange(aircraft) >= minRangeKm;
-        }).sorted(Comparator.comparingInt(Aircraft::getSeatingCapacity)).collect(Collectors.toList());
-        if (meetsRequirements.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(meetsRequirements.get(0));
-        }
+    public Collection<Aircraft> getAvailableAircraft() {
+        return availableAircraft;
     }
 
     /**
@@ -72,10 +58,6 @@ public class AircraftService {
     public int getMaximumCheckedBagCapacity() {
         Optional<Aircraft> aircraft = availableAircraft.stream().max(Comparator.comparingInt(Aircraft::getCheckedBagCapacity));
         return aircraft.map(Aircraft::getCheckedBagCapacity).orElse(0);
-    }
-
-    private static double getMaxRange(Aircraft aircraft) {
-        return aircraft.getMaxFuelCapacityKg() / aircraft.getFuelBurnRateKgKm();
     }
 
 }
